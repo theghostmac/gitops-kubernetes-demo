@@ -1,5 +1,12 @@
-FROM --platform=arm64
-MAINTAINER MacBobby theghostmac@gmail.com
+FROM golang:1.x
 
-RUN echo 'Hello World' > /hello.txt
-CMD cat /hello.txt
+WORKDIR /app
+MAINTAINER MacBobby theghostmac@gmail.com
+.
+.
+.
+ADD . /app
+
+EXPOSE 8080
+
+CMD ["go", "build", "main.go"]
