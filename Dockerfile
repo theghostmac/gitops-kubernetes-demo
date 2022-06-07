@@ -1,13 +1,12 @@
-FROM registry.access.redhat.com/ubi8/python-39
-ENV PORT 8080
+FROM golang:1.17.6 as builder
+ENV CGO_ENABLED=0
 
 EXPOSE 8080
 WORKDIR /app
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY . /app/
+RUN go build -o go-app
 
-COPY . .
-
-ENTRYPOINT [ "python" ]
-CMD [ "app.py" ]
+FROM scratch
+ENTRYPOINT [ "/go-app" ]
+COPY --from=builder /app/go-app /
